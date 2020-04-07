@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cdqf.dmsjportal.dao.DmsjProjectMapper">
+  <resultMap id="BaseResultMap" type="cn.cdqf.dmsjportal.entity.DmsjProject">
+    <id column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="project_outline" jdbcType="VARCHAR" property="projectOutline" />
+    <result column="project_money" jdbcType="BIGINT" property="projectMoney" />
+    <result column="project_day" jdbcType="INTEGER" property="projectDay" />
+    <result column="project_status" jdbcType="TINYINT" property="projectStatus" />
+    <result column="deploydate" jdbcType="TIMESTAMP" property="deploydate" />
+    <result column="supportmoney" jdbcType="BIGINT" property="supportmoney" />
+    <result column="supporter" jdbcType="INTEGER" property="supporter" />
+    <result column="COMPLETION" jdbcType="INTEGER" property="completion" />
+    <result column="memberid" jdbcType="INTEGER" property="memberid" />
+    <result column="header_picture_path" jdbcType="VARCHAR" property="headerPicturePath" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    project_id, project_name, project_outline, project_money, project_day, project_status, 
+    deploydate, supportmoney, supporter, COMPLETION, memberid, header_picture_path, type_id, 
+    type_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dmsj_project
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </select>
+    <select id="queryByDeafult" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"></include>
+      from dmsj_project order by supporter DESC
+    </select>
+    <select id="projectExpire" resultType="java.lang.String">
+       SELECT project_id FROM dmsj_project
+      WHERE TIMESTAMPDIFF(DAY,deploydate,NOW())>=project_day AND project_status=0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from dmsj_project
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.cdqf.dmsjportal.entity.DmsjProject">
+    insert into dmsj_project (project_id, project_name, project_outline, 
+      project_money, project_day, project_status, 
+      deploydate, supportmoney, supporter, 
+      COMPLETION, memberid, header_picture_path, 
+      type_id, type_name)
+    values (#{projectId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{projectOutline,jdbcType=VARCHAR}, 
+      #{projectMoney,jdbcType=BIGINT}, #{projectDay,jdbcType=INTEGER}, #{projectStatus,jdbcType=TINYINT}, 
+      #{deploydate,jdbcType=TIMESTAMP}, #{supportmoney,jdbcType=BIGINT}, #{supporter,jdbcType=INTEGER}, 
+      #{completion,jdbcType=INTEGER}, #{memberid,jdbcType=INTEGER}, #{headerPicturePath,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cdqf.dmsjportal.entity.DmsjProject">
+    insert into dmsj_project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="projectOutline != null">
+        project_outline,
+      </if>
+      <if test="projectMoney != null">
+        project_money,
+      </if>
+      <if test="projectDay != null">
+        project_day,
+      </if>
+      <if test="projectStatus != null">
+        project_status,
+      </if>
+      <if test="deploydate != null">
+        deploydate,
+      </if>
+      <if test="supportmoney != null">
+        supportmoney,
+      </if>
+      <if test="supporter != null">
+        supporter,
+      </if>
+      <if test="completion != null">
+        COMPLETION,
+      </if>
+      <if test="memberid != null">
+        memberid,
+      </if>
+      <if test="headerPicturePath != null">
+        header_picture_path,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="typeName != null">
+        type_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectOutline != null">
+        #{projectOutline,jdbcType=VARCHAR},
+      </if>
+      <if test="projectMoney != null">
+        #{projectMoney,jdbcType=BIGINT},
+      </if>
+      <if test="projectDay != null">
+        #{projectDay,jdbcType=INTEGER},
+      </if>
+      <if test="projectStatus != null">
+        #{projectStatus,jdbcType=TINYINT},
+      </if>
+      <if test="deploydate != null">
+        #{deploydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supportmoney != null">
+        #{supportmoney,jdbcType=BIGINT},
+      </if>
+      <if test="supporter != null">
+        #{supporter,jdbcType=INTEGER},
+      </if>
+      <if test="completion != null">
+        #{completion,jdbcType=INTEGER},
+      </if>
+      <if test="memberid != null">
+        #{memberid,jdbcType=INTEGER},
+      </if>
+      <if test="headerPicturePath != null">
+        #{headerPicturePath,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null">
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cdqf.dmsjportal.entity.DmsjProject">
+    update dmsj_project
+    <set>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectOutline != null">
+        project_outline = #{projectOutline,jdbcType=VARCHAR},
+      </if>
+      <if test="projectMoney != null">
+        project_money = #{projectMoney,jdbcType=BIGINT},
+      </if>
+      <if test="projectDay != null">
+        project_day = #{projectDay,jdbcType=INTEGER},
+      </if>
+      <if test="projectStatus != null">
+        project_status = #{projectStatus,jdbcType=TINYINT},
+      </if>
+      <if test="deploydate != null">
+        deploydate = #{deploydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="supportmoney != null">
+        supportmoney = #{supportmoney,jdbcType=BIGINT},
+      </if>
+      <if test="supporter != null">
+        supporter = #{supporter,jdbcType=INTEGER},
+      </if>
+      <if test="completion != null">
+        COMPLETION = #{completion,jdbcType=INTEGER},
+      </if>
+      <if test="memberid != null">
+        memberid = #{memberid,jdbcType=INTEGER},
+      </if>
+      <if test="headerPicturePath != null">
+        header_picture_path = #{headerPicturePath,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null">
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cdqf.dmsjportal.entity.DmsjProject">
+    update dmsj_project
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      project_outline = #{projectOutline,jdbcType=VARCHAR},
+      project_money = #{projectMoney,jdbcType=BIGINT},
+      project_day = #{projectDay,jdbcType=INTEGER},
+      project_status = #{projectStatus,jdbcType=TINYINT},
+      deploydate = #{deploydate,jdbcType=TIMESTAMP},
+      supportmoney = #{supportmoney,jdbcType=BIGINT},
+      supporter = #{supporter,jdbcType=INTEGER},
+      COMPLETION = #{completion,jdbcType=INTEGER},
+      memberid = #{memberid,jdbcType=INTEGER},
+      header_picture_path = #{headerPicturePath,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=INTEGER},
+      type_name = #{typeName,jdbcType=VARCHAR}
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateStatuByIds">
+    update dmsj_project set project_status=#{status}
+    where 1!=1
+    <foreach collection="ids" open="or project_id in(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </update>
+</mapper>

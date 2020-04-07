@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cdqf.dmsjportal.dao.DmsjProjectAttentionMapper">
+  <resultMap id="BaseResultMap" type="cn.cdqf.dmsjportal.entity.DmsjProjectAttentionKey">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <id column="project_id" jdbcType="VARCHAR" property="projectId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="cn.cdqf.dmsjportal.entity.DmsjProjectAttentionKey">
+    delete from dmsj_project_attention
+    where user_id = #{userId,jdbcType=VARCHAR}
+      and project_id = #{projectId,jdbcType=VARCHAR}
+  </delete>
+    <select id="queryProjectIdsByUserId" resultType="java.lang.String">
+
+ select project_id from dmsj_project_attention where user_id=#{userId}
+    </select>
+  <select id="queryAttentionParamById" resultType="cn.cdqf.dmsjportal.entity.param.UserAttentionParam">
+     SELECT dp.project_id projectId,project_Name projectName,COMPLETION,(project_day-TIMESTAMPDIFF(DAY,deploydate,NOW())) residueDay
+            ,supportMoney,supporter,(SELECT COUNT(1)  FROM dmsj_project_attention WHERE project_id=dp.project_id) attention
+    FROM  dmsj_project dp  where dp.project_id=#{projectId}
+  </select>
+  <insert id="insert" parameterType="cn.cdqf.dmsjportal.entity.DmsjProjectAttentionKey">
+    insert into dmsj_project_attention (user_id, project_id)
+    values (#{userId}, #{projectId})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cdqf.dmsjportal.entity.DmsjProjectAttentionKey">
+    insert into dmsj_project_attention
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

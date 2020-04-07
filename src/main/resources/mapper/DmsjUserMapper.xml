@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cdqf.dmsjportal.dao.DmsjUserMapper">
+  <resultMap id="BaseResultMap" type="cn.cdqf.dmsjportal.entity.DmsjUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="register_ip" jdbcType="VARCHAR" property="registerIp" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, username, password, phone, register_ip, register_time, login_ip, login_time, 
+    address, id_card, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dmsj_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="login" resultType="cn.cdqf.dmsjportal.entity.DmsjUser">
+      select
+      <include refid="Base_Column_List"></include>
+      from dmsj_user where username=#{username}
+    </select>
+    <select id="phonecheck" resultType="java.lang.Integer">
+      select count(1) from dmsj_user where phone=#{phone}
+    </select>
+  <select id="usernamecheck" resultType="java.lang.Integer">
+    select count(1) from dmsj_user where username=#{username}
+  </select>
+  <select id="idcardcheck" resultType="java.lang.Integer">
+     select count(1) from dmsj_user where id_card=#{idCard}
+  </select>
+    <select id="loginByPhone" resultMap="BaseResultMap">
+      select id,user_id,username,password,id_card,status
+      from dmsj_user where phone=#{phone}
+    </select>
+    <select id="getUserByUserId" resultType="cn.cdqf.dmsjportal.entity.DmsjUser">
+      select
+      <include refid="Base_Column_List"></include>
+      from dmsj_user where user_id=#{userid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dmsj_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.cdqf.dmsjportal.entity.DmsjUser">
+    insert into dmsj_user (id, user_id, username, 
+      password, phone, register_ip, 
+      register_time, login_ip, login_time, 
+      address, id_card, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{registerIp,jdbcType=VARCHAR}, 
+      #{registerTime,jdbcType=TIMESTAMP}, #{loginIp,jdbcType=VARCHAR}, #{loginTime,jdbcType=TIMESTAMP}, 
+      #{address,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.cdqf.dmsjportal.entity.DmsjUser">
+    insert into dmsj_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="registerIp != null">
+        register_ip,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+      <if test="loginIp != null">
+        login_ip,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="registerIp != null">
+        #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.cdqf.dmsjportal.entity.DmsjUser">
+    update dmsj_user
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="registerIp != null">
+        register_ip = #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginIp != null">
+        login_ip = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.cdqf.dmsjportal.entity.DmsjUser">
+    update dmsj_user
+    set user_id = #{userId,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      register_ip = #{registerIp,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      login_ip = #{loginIp,jdbcType=VARCHAR},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      address = #{address,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

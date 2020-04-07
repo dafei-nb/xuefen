@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>登录页</title>
+  <!--<link rel="stylesheet" href="css/style.css">-->
+  <link href="/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <script src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+  <style>
+    body{
+      background-image: url("img/photo.jpg");
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container" style="margin-left: 600px;margin-top: 150px;width: 300px">
+  <div class="left">
+    <div class="header">
+      <h2 class="animation a1">欢迎来到点名时间</h2>
+    </div>
+    <div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">表单登录</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">短信登录</a></li>
+        <li role="presentation"> <a href="
+https://open.weixin.qq.com/connect/qrconnect?appid=wxd853562a0548a7d0&redirect_uri=http://bugtracker.itsource.cn/wx/callback&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect">微信登录</a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+          <form action="/aaa/login" method="post">
+            <div class="form-group">
+              <label for="exampleInputUsername">用户名</label>
+              <input type="text" class="form-control" id="exampleInputUsername" placeholder="用户名" name="username" style="width: 90%">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1"  name="password" placeholder="密码" style="width: 90%">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputCode">验证码</label>
+              <input type="text" name="imageCode" class="form-control" id="exampleInputCode" placeholder="请输入验证码" style="width: 90%">
+              <img src="/code/image" id="getImageCode">
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox"> Check me out
+              </label>
+            </div>
+            <button type="submit" class="btn btn-default">登录</button>
+          </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+          <form action="/aaa/mobile" method="post">
+            <div class="form-group">
+              <label for="exampleInputMobile">手机号</label>
+              <input type="text" class="form-control" id="exampleInputMobile" name="phone" placeholder="请输入手机号" style="width: 90%">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputMobileCode">短信验证码</label>
+              <input type="password"   name="smsCode" class="form-control" id="exampleInputMobileCode" placeholder="验证码" style="width: 40%">
+              <a href="javascript:void(0)" id="getMobileCode">发送验证码</a>
+            </div>
+
+            <button type="submit" class="btn btn-default">登录</button>
+          </form>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="messages">二维码加载中</div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <!--  <div class="right"></div>-->
+
+
+</div>
+
+</body>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script>
+  $(function () {
+    $("#getImageCode").click(function () {
+      $(this).attr("src","/code/image?random="+Math.random());
+    });
+    $('#myTabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
+    $("#getMobileCode").click(function () {
+      //应该判断手机号码11位
+      $.ajax({
+        type:"GET",
+        url:"/code/mobile/"+$("#exampleInputMobile").val(),
+        success:function (data) {
+        }
+      })
+    })
+  })
+</script>
+</html>
